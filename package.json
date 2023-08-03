@@ -1,6 +1,6 @@
 {
   "name": "vue-sjv",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "A simple vue3 JSON viewer component.",
   "main": "./dist/vue-sjv.umd.cjs",
   "module": "./dist/vue-sjv.js",
@@ -10,6 +10,12 @@
       "require": "./dist/vue-sjv.umd.cjs"
     }
   },
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,7 +25,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
-  "dependencies": {
+  "peerDependencies": {
     "vue": "^3.3.4"
   },
   "devDependencies": {

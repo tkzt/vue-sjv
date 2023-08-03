@@ -54,9 +54,9 @@
                   <simple-json-viewer :model-value="value" :depth="depth + 1"
                     :ref="(node) => { updateChildrenRef(node as ChildrenRefType, key) }"
                     :initial-expanded-depth="initialExpandedDepth"
-                    :teleportTo="`#sjv-obj-${depth}-${key}`" />
+                    :teleportTo="teleportMap['obj-' + key]" />
                 </div>
-                <div :id="`sjv-obj-${depth}-${key}`"></div>
+                <div :ref="elem => updateTeleportMap(elem as HTMLElement, 'obj-' + key)"></div>
               </div>
             </div>
             <div class="pl-8px">}</div>
@@ -116,9 +116,9 @@
                   <simple-json-viewer :model-value="item" :depth="depth + 1"
                     :ref="(node) => { updateChildrenRef(node as ChildrenRefType, index) }"
                     :initial-expanded-depth="initialExpandedDepth"
-                    :teleportTo="`#sjv-arr-${depth}-${index}`" />
+                    :teleportTo="teleportMap['arr-' + index]" />
                 </div>
-                <div :id="`sjv-arr-${depth}-${index}`"></div>
+                <div :ref="elem => updateTeleportMap(elem as HTMLElement, 'arr-' + index)"></div>
               </div>
             </div>
             <div class="pl-8px">]</div>
@@ -151,7 +151,7 @@
 
 <script setup lang="ts">
 import { useClipboard, useMouseInElement } from '@vueuse/core'
-import { ComponentPublicInstance, computed, ref, reactive } from 'vue'
+import { ComponentPublicInstance, computed, ref, watch } from 'vue'
 
 interface ExposedState {
   valueType: string
@@ -165,7 +165,7 @@ const props = withDefaults(defineProps<{
   modelValue: unknown
   depth?: number
   initialExpandedDepth?: number
-  teleportTo?: string
+  teleportTo?: HTMLElement
 }>(), {
   depth: 0,
   initialExpandedDepth: 0,
@@ -183,10 +183,11 @@ const typeColorMap: Record<string, string> = {
   boolean: 'c-blue-600',
 }
 
-const childrenRefMap = reactive<Record<string, ChildrenRefType>>({})
+const childrenRefMap = ref<Record<string, ChildrenRefType>>({})
 const expand = ref<boolean>(props.depth < props.initialExpandedDepth)
 const itemRef = ref<HTMLElement>()
 const copied = ref(false)
+const teleportMap = ref<Record<string, HTMLElement>>({})
 const { isOutside } = useMouseInElement(itemRef)
 const valueType = computed(() => getValueType(props.modelValue))
 
@@ -200,17 +201,20 @@ function getValueType(value: unknown) {
   }
 }
 
-
 function updateChildrenRef(node: ComponentPublicInstance<ExposedState>, key: string) {
-  childrenRefMap[key] = node
+  childrenRefMap.value[key] = node
+}
+
+function updateTeleportMap(node: HTMLElement, key: string) {
+  teleportMap.value[key] = node
 }
 
 function checkExpandable(key: string) {
-  return ['array', 'object'].includes(childrenRefMap[key]?.valueType)
+  return ['array', 'object'].includes(childrenRefMap.value[key]?.valueType)
 }
 
 function toggleExpand(key: string) {
-  childrenRefMap[key]?.toggleExpand?.()
+  childrenRefMap.value[key]?.toggleExpand?.()
 }
 
 function copyContent(content: unknown) {
@@ -223,6 +227,11 @@ function copyContent(content: unknown) {
   copied.value = true
   setTimeout(() => { copied.value = false }, 2000)
 }
+
+watch(expand, () => {
+  childrenRefMap.value = {}
+  teleportMap.value = {}
+})
 
 
 defineExpose({

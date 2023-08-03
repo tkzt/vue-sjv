@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import SimpleJsonViewer from '../packages'
 import Mock from 'mockjs'
 
-const jsonValue = ref(null)
+const jsonValue = ref<object | null>(null)
 
 function refreshJson() {
   jsonValue.value = {
