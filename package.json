@@ -1,0 +1,55 @@
+{
+  "name": "vue-sjv",
+  "version": "0.0.1",
+  "description": "A simple vue3 JSON viewer component.",
+  "main": "./dist/vue-sjv.umd.cjs",
+  "module": "./dist/vue-sjv.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-sjv.js",
+      "require": "./dist/vue-sjv.umd.cjs"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.53",
+    "@types/mockjs": "^1.0.7",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitest/coverage-v8": "^0.34.1",
+    "@vue/test-utils": "^2.4.1",
+    "@vueuse/core": "^10.2.1",
+    "happy-dom": "^10.5.2",
+    "mockjs": "^1.1.0",
+    "typescript": "^5.0.2",
+    "unocss": "^0.53.6",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.4.0",
+    "vite-plugin-libcss": "^1.1.1",
+    "vitest": "^0.34.1",
+    "vue-tsc": "^1.8.5"
+  },
+  "author": "Allen Tao",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkzt/vue-sjv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tkzt/vue-sjv/issues"
+  },
+  "homepage": "https://github.com/tkzt/vue-sjv#readme",
+  "license": "MIT",
+  "keywords": [
+    "JSON viewer",
+    "vue3"
+  ]
+}
