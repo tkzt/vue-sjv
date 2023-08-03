@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import SimpleJsonViewer from '../packages'
-import '../dist/style.css'
 import Mock from 'mockjs'
 
 const jsonValue = ref(null)
