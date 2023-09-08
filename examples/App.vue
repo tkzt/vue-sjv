@@ -32,4 +32,17 @@ onMounted(() => {
   <div class="pa-2 rd-2 bg-white w-fit box-border max-w-200">
     <SimpleJsonViewer :model-value="jsonValue" />
   </div>
+  <div class="flex text-xs mt-12 c-gray-600">
+    <div class="ma-auto flex items-center">
+      <span class="mr-1">&copy {{ new Date().getFullYear() }}</span>
+      <a href="https://tkzt.cn" class="outline-none hover-underline decoration-none c-inherit">
+        Allen Tao
+      </a>
+      <span class="mx-1">·</span>
+      <a href="https://github.com/tkzt/vue-sjv"
+        class="outline-none hover-underline decoration-none c-inherit">
+        View in GitHub
+      </a>
+    </div>
+  </div>
 </template>

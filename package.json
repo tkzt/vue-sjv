@@ -1,6 +1,6 @@
 {
   "name": "vue-sjv",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A simple vue3 JSON viewer component.",
   "main": "./dist/vue-sjv.umd.cjs",
   "module": "./dist/vue-sjv.js",

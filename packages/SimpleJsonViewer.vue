@@ -13,7 +13,7 @@
             }
           </div>
           <div class="c-gray-400 text-xs italic">
-            {{ Object.keys(modelValue as Object).length }} items
+            {{ Object.keys(modelValue as Object).length }} {{ singularOrPlural(modelValue) }}
           </div>
           <div :class="buttonCls" v-if="!isOutside" @click="copyContent(modelValue)">
             <i size="12" class="c-green-600 i-mdi-check" v-if="copied"></i>
@@ -27,7 +27,7 @@
             </div>
             {
             <span class="c-gray-400 text-xs italic ml-2">
-              {{ Object.keys(modelValue as Object).length }} items
+              {{ Object.keys(modelValue as Object).length }} {{ singularOrPlural(modelValue) }}
             </span>
             <div :class="buttonCls" v-if="!isOutside" @click="copyContent(modelValue)">
               <i size="12" class="c-green-600 i-mdi-check" v-if="copied"></i>
@@ -48,9 +48,7 @@
                     <i size="16" :class="childrenRefMap[key]?.expand ? 'i-mdi-chevron-down' :
                       'i-mdi-chevron-right'"></i>
                   </div>
-                  <div class="mr-2">
-                    "{{
-                      key }}":</div>
+                  <div class="mr-2">"{{ key }}":</div>
                   <simple-json-viewer :model-value="value" :depth="depth + 1"
                     :ref="(node) => { updateChildrenRef(node as ChildrenRefType, key) }"
                     :initial-expanded-depth="initialExpandedDepth"
@@ -76,7 +74,7 @@
             ]
           </div>
           <div class="c-gray-400 text-xs italic">
-            {{ (modelValue as unknown[]).length }} items
+            {{ (modelValue as unknown[]).length }} {{ singularOrPlural(modelValue) }}
           </div>
           <div :class="buttonCls" v-if="!isOutside" @click="copyContent(modelValue)">
             <i size="12" class="c-green-600 i-mdi-check" v-if="copied"></i>
@@ -90,7 +88,7 @@
             </div>
             [
             <span class="c-gray-400 text-xs italic ml-2">
-              {{ (modelValue as unknown[]).length }} items
+              {{ (modelValue as unknown[]).length }} {{ singularOrPlural(modelValue) }}
             </span>
             <div :class="buttonCls" v-if="!isOutside" @click="copyContent(modelValue)">
               <i size="12" class="c-green-600 i-mdi-check" v-if="copied"></i>
@@ -195,7 +193,7 @@ function getValueType(value: unknown) {
   const obviousType = typeof value
   if (obviousType === 'object') {
     const [, actualType] = Object.prototype.toString.call(value).match(/\s(.*?)]/)!
-    return actualType.toLowerCase()
+    return actualType.toLowerCase() as 'array' | 'object'
   } else {
     return obviousType
   }
@@ -226,6 +224,11 @@ function copyContent(content: unknown) {
 
   copied.value = true
   setTimeout(() => { copied.value = false }, 2000)
+}
+
+function singularOrPlural(items: unknown) {
+  const length = Object.keys(items as object).length
+  return length > 1 ? 'items' : 'item'
 }
 
 watch(expand, () => {
